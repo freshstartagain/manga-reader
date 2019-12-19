@@ -41,6 +41,7 @@ def add_genre():
 
     return genre_schema.jsonify(new_genre)
 
+
 @app.route("/genre/<id>", methods=["PUT"])
 def update_genre(id):
     genre = Genre.query.get(id)
@@ -52,7 +53,8 @@ def update_genre(id):
     db.session.commit()
 
     return genre_schema.jsonify(genre)
-    
+
+
 @app.route("/genre/<id>", methods=["DELETE"])
 def delete_genre(id):
     genre = Genre.query.get(id)
