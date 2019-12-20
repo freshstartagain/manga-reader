@@ -1,36 +1,25 @@
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint
 from mangareaderapi import app, db
-from mangareaderapi.models import Manga, Author, Artist, Genre
-from mangareaderapi.schema import (
-    manga_schema,
-    mangas_schema,
-    genre_schema,
-    genres_schema,
-)
+from mangareaderapi.models import Genre
+from mangareaderapi.schema import genre_schema, genres_schema
 
-# Manga Routes
-@app.route("/manga", methods=["GET"])
-def get_mangas():
-    all_mangas = Manga.query.all()
-    result = mangas_schema.dump(all_mangas)
-    return jsonify(result)
-
+genre = Blueprint('genre', __name__)
 
 # Genre Routes
-@app.route("/genre", methods=["GET"])
+@genre.route("/genre", methods=["GET"])
 def get_genres():
     all_genres = Genre.query.all()
     result = genres_schema.dump(all_genres)
     return jsonify(result)
 
 
-@app.route("/genre/<id>", methods=["GET"])
+@genre.route("/genre/<id>", methods=["GET"])
 def get_genre(id):
     genre = Genre.query.get(id)
     return genre_schema.jsonify(genre)
 
 
-@app.route("/genre", methods=["POST"])
+@genre.route("/genre", methods=["POST"])
 def add_genre():
     name = request.json["name"]
 
@@ -42,7 +31,7 @@ def add_genre():
     return genre_schema.jsonify(new_genre)
 
 
-@app.route("/genre/<id>", methods=["PUT"])
+@genre.route("/genre/<id>", methods=["PUT"])
 def update_genre(id):
     genre = Genre.query.get(id)
 
@@ -55,7 +44,7 @@ def update_genre(id):
     return genre_schema.jsonify(genre)
 
 
-@app.route("/genre/<id>", methods=["DELETE"])
+@genre.route("/genre/<id>", methods=["DELETE"])
 def delete_genre(id):
     genre = Genre.query.get(id)
 

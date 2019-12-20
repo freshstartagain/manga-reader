@@ -1,3 +1,5 @@
 .vscode
 __pycache__
 mangareaderapi/__pycache__
+mangareaderapi/admin/__pycache__
+mangareaderapi/admin/routes/__pycache__

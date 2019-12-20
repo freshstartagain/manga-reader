@@ -17,5 +17,12 @@ db = SQLAlchemy(app)
 # Init ma
 ma = Marshmallow(app)
 
+from mangareaderapi.admin.routes.manga import manga
+from mangareaderapi.admin.routes.author import author
+from mangareaderapi.admin.routes.artist import artist
+from mangareaderapi.admin.routes.genre import genre
 
-from mangareaderapi import routes
+app.register_blueprint(manga)
+app.register_blueprint(author)
+app.register_blueprint(artist)
+app.register_blueprint(genre)

@@ -29,13 +29,11 @@ class Manga(db.Model):
         backref=db.backref("mangas", lazy=True),
     )
 
-    def __init__(self, name, published, status, image, author_id, artist_id):
+    def __init__(self, name, published, status, image):
         self.name = name
         self.published = published
         self.status = status
         self.image = image
-        self.author_id = author_id
-        self.artist_id = artist_id
 
 
 class Author(db.Model):
