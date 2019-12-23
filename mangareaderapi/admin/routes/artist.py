@@ -2,10 +2,11 @@ from flask import request, jsonify, Blueprint
 from mangareaderapi import app, db
 from mangareaderapi.models import Artist
 from mangareaderapi.schema import artist_schema, artists_schema
+from mangareaderapi.admin.routes.utils import check_existing_by_name
 
 artist = Blueprint("artist", __name__)
 
-# Artist
+
 @artist.route("/artist", methods=["GET"])
 def get_artists():
     all_artist = Artist.query.all()
@@ -25,32 +26,41 @@ def get_artist(id):
 def add_artist():
     name = request.json["name"]
 
-    new_artist = Artist(name)
+    if check_existing_by_name(name, Artist):
+        return jsonify(message="The artist is already existing")
+    else:
+        new_artist = Artist(name)
 
-    db.session.add(new_artist)
-    db.session.commit()
+        db.session.add(new_artist)
+        db.session.commit()
 
-    return artist_schema.jsonify(new_artist)
+        return artist_schema.jsonify(new_artist)
 
 
 @artist.route("/artist/<id>", methods=["PUT"])
 def update_artist(id):
     artist = Artist.query.get(id)
 
-    name = request.json["name"]
+    if artist:
+        name = request.json["name"]
 
-    artist.name = name
+        artist.name = name
 
-    db.session.commit()
+        db.session.commit()
 
-    return artist_schema.jsonify(artist)
+        return artist_schema.jsonify(artist)
+    else:
+        return jsonify(message="The artist does not exist")
 
 
 @artist.route("/artist/<id>", methods=["DELETE"])
 def delete_artist(id):
     artist = Artist.query.get(id)
 
-    db.session.delete(artist)
-    db.session.commit()
+    if artist:
+        db.session.delete(artist)
+        db.session.commit()
 
-    return artist_schema.jsonify(artist)
+        return artist_schema.jsonify(artist)
+    else:
+        return jsonify(message="The artist does not exist")
