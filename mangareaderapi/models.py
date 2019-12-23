@@ -13,8 +13,9 @@ class Manga(db.Model):
     published = db.Column(db.DateTime, nullable=False)
     status = db.Column(db.Boolean, nullable=False)
     image = db.Column(db.String(20), nullable=False)
-    creation_date = db.Column(
-        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now()
     )
     author_id = db.Column(
         db.Integer, db.ForeignKey("author.id", ondelete="CASCADE"), nullable=False
@@ -38,41 +39,36 @@ class Manga(db.Model):
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    middle_name = db.Column(db.String(100), nullable=True)
-    last_name = db.Column(db.String(100), nullable=False)
-    creation_date = db.Column(
-        db.TIMESTAMP, server_default=db.func.current_timestam(), nullable=False
+    name = db.Column(db.String(200), nullable=False)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now()
     )
     mangas = db.relationship("Manga", backref="author", lazy=True)
 
-    def __init__(self, first_name, middle_name, last_name):
-        self.first_name = first_name
-        self.middle_name = middle_name
-        self.last_name = last_name
+    def __init__(self, name):
+        self.name = name
 
 
 class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    middle_name = db.Column(db.String(100), nullable=True)
-    last_name = db.Column(db.String(100), nullable=False)
-    creation_date = db.Column(
-        db.TIMESTAMP, server_default=db.func.current_timestam(), nullable=False
+    name = db.Column(db.String(200), nullable=False)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now()
     )
     mangas = db.relationship("Manga", backref="artist", lazy=True)
 
-    def __init__(self, first_name, middle_name, last_name):
-        self.first_name = first_name
-        self.middle_name = middle_name
-        self.last_name = last_name
+    def __init__(self, name):
+        self.name = name
 
 
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    creation_date = db.Column(
-        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now()
     )
 
     def __init__(self, name):

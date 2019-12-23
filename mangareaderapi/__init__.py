@@ -1,17 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-import os
+from mangareaderapi.config import Config
 
 
 # Init app
 app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
-# Database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-    basedir, "manga_reader.sqlite"
-)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config.from_object(Config)
+
+
 # Init db
 db = SQLAlchemy(app)
 # Init ma
@@ -26,3 +23,4 @@ app.register_blueprint(manga)
 app.register_blueprint(author)
 app.register_blueprint(artist)
 app.register_blueprint(genre)
+

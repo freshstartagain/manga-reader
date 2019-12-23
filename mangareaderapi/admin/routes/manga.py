@@ -27,9 +27,9 @@ def add_manga():
     published = request.json["published"]
     status = request.json["status"]
     image = request.json["image"]
-    author = request.json["author"]
-    artist = request.json["artist"]
-    genre = request.json["genre"]
+    author = request.json["author_id"]
+    artist = request.json["artist_id"]
+    genre = request.json["genre_id"]
 
     author = Author.query.get(author)
     artist = Artist.query.get(artist)

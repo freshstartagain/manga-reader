@@ -8,17 +8,17 @@ class MangaSchema(ma.Schema):
 
 class AuthorSchema(ma.Schema):
     class Meta:
-        fields = ("id", "firstname", "middlename", "lastname")
+        fields = ("id", "name", "created_on", "updated_on")
 
 
 class ArtistSchema(ma.Schema):
     class Meta:
-        fields = ("id", "firstname", "middlename", "lastname")
+        fields = ("id", "name", "created_on", "updated_on")
 
 
 class GenreSchema(ma.Schema):
     class Meta:
-        fields = ("id", "name", "creation_date")
+        fields = ("id", "name", "created_on", "updated_on")
 
 
 manga_schema = MangaSchema()

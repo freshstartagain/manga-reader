@@ -3,7 +3,7 @@ from mangareaderapi import app, db
 from mangareaderapi.models import Author
 from mangareaderapi.schema import author_schema, authors_schema
 
-author = Blueprint('author', __name__)
+author = Blueprint("author", __name__)
 
 # Author
 @author.route("/author", methods=["GET"])
@@ -23,11 +23,9 @@ def get_author(id):
 
 @author.route("/author", methods=["POST"])
 def add_author():
-    firstname = request.json["firstname"]
-    middlename = request.json["middlename"]
-    lastname = request.json["lastname"]
+    name = request.json["name"]
 
-    new_author = Author(first_name, middle_name, last_name)
+    new_author = Author(name)
 
     db.session.add(new_author)
     db.session.commit()
@@ -39,13 +37,9 @@ def add_author():
 def update_author(id):
     author = Author.query.get(id)
 
-    firstname = request.json["firstname"]
-    middlename = request.json["middlename"]
-    lastname = request.json["lastname"]
+    name = request.json["name"]
 
-    author.first_name = firstname
-    author.middle_name = middlename
-    author.last_name = lastname
+    author.name = name
 
     db.session.commit()
 

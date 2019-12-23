@@ -3,7 +3,7 @@ from mangareaderapi import app, db
 from mangareaderapi.models import Artist
 from mangareaderapi.schema import artist_schema, artists_schema
 
-artist = Blueprint('artist', __name__)
+artist = Blueprint("artist", __name__)
 
 # Artist
 @artist.route("/artist", methods=["GET"])
@@ -23,29 +23,23 @@ def get_artist(id):
 
 @artist.route("/artist", methods=["POST"])
 def add_artist():
-    firstname = request.json["firstname"]
-    middlename = request.json["middlename"]
-    lastname = request.json["lastname"]
+    name = request.json["name"]
 
-    new_artist = Artist(first_name, middle_name, last_name)
+    new_artist = Artist(name)
 
     db.session.add(new_artist)
     db.session.commit()
 
-    return author_schema.jsonify(new_author)
+    return artist_schema.jsonify(new_artist)
 
 
 @artist.route("/artist/<id>", methods=["PUT"])
 def update_artist(id):
     artist = Artist.query.get(id)
 
-    firstname = request.json["firstname"]
-    middlename = request.json["middlename"]
-    lastname = request.json["lastname"]
+    name = request.json["name"]
 
-    author.first_name = firstname
-    author.middle_name = middlename
-    author.last_name = lastname
+    artist.name = name
 
     db.session.commit()
 
@@ -53,10 +47,10 @@ def update_artist(id):
 
 
 @artist.route("/artist/<id>", methods=["DELETE"])
-def delete_artist():
+def delete_artist(id):
     artist = Artist.query.get(id)
 
     db.session.delete(artist)
     db.session.commit()
 
-    return author_schema.jsonify(artist)
+    return artist_schema.jsonify(artist)
