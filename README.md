@@ -3,4 +3,6 @@ A manga reader application created using Flask as backend. With a frontend made 
 
 
 # Todo
-    - [ ] Duplicate validation on routes (Genre, Artist, Author)
+- [x] Duplicate validation on routes (Genre, Artist, Author)
+- [ ] Manga route
+- [ ] Securing routes
