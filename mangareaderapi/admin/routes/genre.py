@@ -17,7 +17,11 @@ def get_genres():
 @genre.route("/genre/<id>", methods=["GET"])
 def get_genre(id):
     genre = Genre.query.get(id)
-    return genre_schema.jsonify(genre)
+
+    if genre:
+        return genre_schema.jsonify(genre)
+    else:
+        return jsonify(message="The genre does not exist"), 404
 
 
 @genre.route("/genre", methods=["POST"])
@@ -25,14 +29,14 @@ def add_genre():
     name = request.json["name"]
 
     if check_existing_by_name(name, Genre):
-        return jsonify(message="The genre is already existing")
+        return jsonify(message="The genre is already existing"), 400
     else:
         new_genre = Genre(name)
 
         db.session.add(new_genre)
         db.session.commit()
 
-        return genre_schema.jsonify(new_genre)
+        return genre_schema.jsonify(new_genre), 201
 
 
 @genre.route("/genre/<id>", methods=["PUT"])
@@ -46,9 +50,9 @@ def update_genre(id):
 
         db.session.commit()
 
-        return genre_schema.jsonify(genre)
+        return genre_schema.jsonify(genre), 200
     else:
-        return jsonify(message="The genre does not exist")
+        return jsonify(message="The genre does not exist"), 400
 
 
 @genre.route("/genre/<id>", methods=["DELETE"])
@@ -59,7 +63,7 @@ def delete_genre(id):
         db.session.delete(genre)
         db.session.commit()
 
-        return genre_schema.jsonify(genre)
+        return genre_schema.jsonify(genre), 200
     else:
-        return jsonify(message="The genre does not exist")
+        return jsonify(message="The genre does not exist"), 400
 

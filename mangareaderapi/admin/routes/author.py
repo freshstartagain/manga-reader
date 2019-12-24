@@ -11,15 +11,17 @@ author = Blueprint("author", __name__)
 def get_authors():
     all_authors = Author.query.all()
     result = authors_schema.dump(all_authors)
-    return jsonify(result)
+    return jsonify(result), 200
 
 
-@author.route("/author<id>", methods=["GET"])
+@author.route("/author/<id>", methods=["GET"])
 def get_author(id):
     author = Author.query.get(id)
-    result = author_schema.jsonify(author)
 
-    return result
+    if author:
+        return author_schema.jsonify(author), 200
+    else:
+        return jsonify(message="The author does not exist"), 404
 
 
 @author.route("/author", methods=["POST"])
@@ -27,14 +29,14 @@ def add_author():
     name = request.json["name"]
 
     if check_existing_by_name(name, Author):
-        return jsonify(message=f"The author is already existing")
+        return jsonify(message="The author is already existing"), 400
     else:
         new_author = Author(name)
 
         db.session.add(new_author)
         db.session.commit()
 
-        return author_schema.jsonify(new_author)
+        return author_schema.jsonify(new_author), 201
 
 
 @author.route("/author/<id>", methods=["PUT"])
@@ -48,9 +50,9 @@ def update_author(id):
 
         db.session.commit()
 
-        return author_schema.jsonify(author)
+        return author_schema.jsonify(author), 200
     else:
-        return jsonify(message=f"The author does not exist")
+        return jsonify(message="The author does not exist"), 400
 
 
 @author.route("/author/<id>", methods=["DELETE"])
@@ -61,6 +63,6 @@ def delete_author(id):
         db.session.delete(author)
         db.session.commit()
 
-        return author_schema.jsonify(author)
+        return author_schema.jsonify(author), 200
     else:
-        return jsonify(message="The author does not exist")
+        return jsonify(message="The author does not exist"), 400
